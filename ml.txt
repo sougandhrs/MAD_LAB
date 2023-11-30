@@ -245,7 +245,7 @@ print(coefficients)
 # Additional analysis, visualization, and interpretation can be performed here.
 
 
-exp12
+exp12 linear
 
 
 
@@ -295,6 +295,93 @@ print(coefficients)
 # Step 9: Optionally, explore model improvements (feature engineering, regularization, etc.)
 
 # Additional analysis, visualization, and interpretation can be performed here.
+
+
+exp 13 decisontree
+
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+from sklearn import tree
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Decision Tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test)
+
+# Calculate the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy:.2f}')
+
+# Display the classification report and confusion matrix
+print(classification_report(y_test, y_pred))
+print(f'Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}')
+
+# Plot the decision tree
+plt.figure(figsize=(12, 8))
+tree.plot_tree(clf, feature_names=iris.feature_names, class_names=iris.target_names, filled=True)
+plt.show()
+
+14 kmean
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generate sample data
+data = np.array([[2, 3], [3, 4], [5, 6], [9, 10], [10, 8], [12, 12]])
+
+# Number of clusters (you can change this)
+k = 2
+
+# Initialize centroids randomly
+centroids = data[np.random.choice(data.shape[0], k, replace=False)]
+
+# Main K-means algorithm
+num_iterations = 100
+
+for iteration in range(num_iterations):
+    # Calculate distances between data points and centroids
+    distances = np.linalg.norm(data[:, np.newaxis] - centroids, axis=2)
+   
+    # Assign data points to the nearest centroid
+    labels = np.argmin(distances, axis=1)
+    print(labels)
+   
+    # Plot data points and current centroids
+    plt.scatter(data[:, 0], data[:, 1], c=labels)
+    plt.scatter(centroids[:, 0], centroids[:, 1], c='red', marker='X', s=200)
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
+    plt.title(f"Iteration {iteration}")
+    plt.show()
+   
+    # Update centroids based on the mean of assigned data points
+    new_centroids = np.array([data[labels == i].mean(axis=0) for i in range(k)])
+   
+    # Check for convergence
+    if np.array_equal(centroids, new_centroids):
+        break
+   
+    centroids = new_centroids
+
+# Print final cluster assignments and centroids
+print(distances)
+print("Final Cluster Assignments:", labels)
+print("Final Cluster Centroids:", centroids)
+
 
 
 
